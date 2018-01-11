@@ -15,7 +15,7 @@ const DEBUG = true; // production : false; dev : true
 const BD_HOST = 'localhost';
 const BD_DBNAME = 'billeterie_cpoa';
 const BD_USER = 'root';
-const BD_PWD = 'root';
+const BD_PWD = '';
 
 // Langue du site
 const LANG ='FR-fr';
@@ -42,5 +42,5 @@ define('PATH_SCRIPTS', PATH_ASSETS.'scripts/');
 
 //fichiers
 //define('LOG_BDD','logbdd.txt');
-define('PATH_LOGO', PATH_GALERIE.'logo.png');
+define('PATH_LOGO', PATH_IMAGES.'logo.png');
 define('PATH_MENU', PATH_VIEWS.'menu.php');
