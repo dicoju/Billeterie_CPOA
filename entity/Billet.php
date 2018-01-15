@@ -129,5 +129,4 @@ class Billet{
         $this->_numEmplacement = $numEmplacement;
     }
 
-
 }

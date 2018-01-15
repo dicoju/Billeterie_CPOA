@@ -8,7 +8,7 @@
  */
 require_once(PATH_MODELS.'DAO.php');
 class BilletDAO extends DAO {
-    public function get($numBillet){
+    public function getById($numBillet){
         require_once (PATH_ENTITY.'Billet.php');
 
         // préparation du tableau de paramètres pour la requette préparée
@@ -21,10 +21,10 @@ class BilletDAO extends DAO {
             // On crée une un objet User puis on le retourne
             $billet = new Billet(
                 $res['numBillet'],
-                $res['prixBilletInitial'],
+                $res['montant'],
                 $res['codePromo'],
-                $res['dateBillet'],
-                $res['numUser'],
+                $res['jourBillet'],
+                $res['mailUser'],
                 $res['numEmplacement']
             );
 
@@ -33,9 +33,62 @@ class BilletDAO extends DAO {
         return null;
     }
 
-    public function create($prixInitial, $codepromo, $date, $numUser, $numEmplacement){
-        $param = array($prixInitial, $codepromo, $date, $numUser, $numEmplacement);
-        $res = $this->addSupprRow('insert into billet (prixBilletInitial, codePromo, dateBillet, numUser, numEmplacement) VALUES (?, ?, ?, ?, ?)', $param);
+    public function getByDate($date){
+        require_once (PATH_ENTITY.'Billet.php');
+
+        // préparation du tableau de paramètres pour la requette préparée
+        $param = array($date);
+        // requete préparée
+        $res = $this->queryAll('select * from billet where dateBillet = ?', $param);
+
+        $tabBillets = array();
+        // Si la requete est valide
+        if ($res){
+            // On crée une un objet User puis on le retourne
+            for ($i=0; $i<count($res); $i++){
+                $tabBillets[$i] = new Billet(
+                    $res['numBillet'],
+                    $res['montant'],
+                    $res['codePromo'],
+                    $res['jourBillet'],
+                    $res['mailUser'],
+                    $res['numEmplacement']);
+            }
+            return $tabBillets;
+        }
+        return null;
+    }
+
+    public function getByDateAndEmplacement($date, $emplacement){
+        require_once (PATH_ENTITY.'Billet.php');
+
+        // préparation du tableau de paramètres pour la requette préparée
+        $param = array($date, $emplacement);
+        // requete préparée
+        $res = $this->queryRow('select * from billet where dateBillet = ? and numEmplacement = ?', $param);
+
+        $tabBillets = array();
+        // Si la requete est valide
+        if ($res){
+            // On crée une un objet User puis on le retourne
+            for ($i=0; $i<count($res); $i++){
+                $tabBillets[$i] = new Billet(
+                    $res['numBillet'],
+                    $res['montant'],
+                    $res['codePromo'],
+                    $res['jourBillet'],
+                    $res['mailUser'],
+                    $res['numEmplacement']);
+            }
+            return $tabBillets;
+        }
+        return null;
+    }
+
+    public function create($prix, $codepromo, $date, $mail, $numEmplacement){
+        $param = array($prix, $codepromo, $date, $mail, $numEmplacement);
+        $res = $this->addSupprRow('insert into billet (montant, codePromo, jourBillet, mailUser, numEmplacement) 
+              VALUES (?, ?, ?, ?, ?)', $param);
         return $res;
     }
 

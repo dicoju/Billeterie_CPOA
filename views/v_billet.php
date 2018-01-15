@@ -69,7 +69,7 @@
                 </button>
             </form>
             <br>
-            <label id="labelMontant"> Montant total : <?= PRIX_INITIAL ?> € </label>
+            <label id="labelMontant"></label>
         </div>
 
         <div class="col-sm-6">
@@ -91,7 +91,7 @@
         var varPrixCode = 0;
         var nbPlaces = 1;
         var montant;
-        var codePromo;
+        var codePromo = "null";
 
         <?php
         foreach ($tabCats as $key){
@@ -106,6 +106,11 @@
             ?> tabCodes.push(new CodePromo("<?= $val ?>", <?= $varPrix ?>)); <?php
         }
         ?>
+
+        $(document).ready(function() {
+            $("#labelMontant").text("Montant total : " + prixInitial + "€");
+            montant = prixInitial;
+        });
 
         $("#nbPlaces").change(function () {
             nbPlaces = this.value;
@@ -129,7 +134,7 @@
             //console.log("varPrixCode : " + varPrixCode);
             if (varPrixCode == -1){
                 varPrixCode = 0;
-                codePromo = '';
+                codePromo = "null";
                 $("#codePromo").addClass("is-invalid").removeClass("is-valid");
                 $("#backupCode").text("Code invalide");
             }
@@ -149,7 +154,7 @@
             }
             else{
                 $.ajax({
-                    url : 'ajax/infosRecapInSession.php',
+                    url : 'controllers/ajax/infosRecapInSession.php',
                     type : 'POST',
                     data : 'varPrixCat=' + varPrixCat + '&varPrixCode=' + varPrixCode + '&montant=' + montant + '&codePromo=' + codePromo,
                     error : function(){
