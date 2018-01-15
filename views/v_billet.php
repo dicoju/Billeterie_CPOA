@@ -13,11 +13,11 @@
 
     <div class="row">
         <div class="col-sm-6">
-            <form>
+            <form id="form" method="post">
                 <div class="form-group">
                     <label for="mail">Mail</label>
                     <input type="email" class="form-control" id="mail" name="mail" placeholder="Mail">
-
+                    <small id="backupEmail" class="form-text text-muted"></small>
                 </div>
                 <div class="form-group">
                     <label for="nbPlaces">Nombre de places</label>
@@ -63,7 +63,10 @@
 
                 <br>
 
-                <input type="submit" class="btn btn-primary" name="btn_valider" value="Je réserve mes places">
+                <button
+                        type="button" class="btn btn-primary" name="btn_valider" id="btn_valider">
+                    Je réserve mes places
+                </button>
             </form>
             <br>
             <label id="labelMontant"> Montant total : <?= PRIX_INITIAL ?> € </label>
@@ -77,13 +80,18 @@
 
 
     <script>
+        var date = <?= $date ?>;
         var tabCats = [];
         var tabCodes = [];
         var prixInitial = <?= PRIX_INITIAL ?>;
+        if (date === 26){
+            prixInitial = prixInitial*1.5;
+        }
         var varPrixCat = 0;
         var varPrixCode = 0;
         var nbPlaces = 1;
         var montant;
+        var codePromo;
 
         <?php
         foreach ($tabCats as $key){
@@ -101,26 +109,27 @@
 
         $("#nbPlaces").change(function () {
             nbPlaces = this.value;
-            console.log("nbPLaces : " + nbPlaces);
+            //console.log("nbPLaces : " + nbPlaces);
             montant = calculerMontant(prixInitial, nbPlaces, varPrixCat, varPrixCode);
-            console.log("Montant : " + montant);
+            //console.log("Montant : " + montant);
         });
 
         $("#categorie").change(function () {
             var categorie = this.value;
             varPrixCat = getVarPrixCat(categorie, tabCats);
-            console.log("varPrixCategorie : " + varPrixCat);
+            //console.log("varPrixCategorie : " + varPrixCat);
             if (varPrixCat == -1) varPrixCat = 0;
             montant = calculerMontant(prixInitial, nbPlaces, varPrixCat, varPrixCode);
-            console.log("Montant : " + montant);
+            //console.log("Montant : " + montant);
         });
 
         $("#validerCodePromo").click(function () {
-            var codePromo = $("#codePromo").val();
+            codePromo = $("#codePromo").val();
             varPrixCode = getVarPrixCode(codePromo, tabCodes);
-            console.log("varPrixCode : " + varPrixCode);
+            //console.log("varPrixCode : " + varPrixCode);
             if (varPrixCode == -1){
                 varPrixCode = 0;
+                codePromo = '';
                 $("#codePromo").addClass("is-invalid").removeClass("is-valid");
                 $("#backupCode").text("Code invalide");
             }
@@ -129,7 +138,31 @@
                 $("#backupCode").text("Remise de " + varPrixCode + "%");
             }
             montant = calculerMontant(prixInitial, nbPlaces, varPrixCat, varPrixCode);
-            console.log("Montant : " + montant);
+            //console.log("Montant : " + montant);
+        });
+
+        $('#btn_valider').click(function () {
+            var mail = $("#mail").val();
+            if (mail === ""){
+                $("#mail").addClass("is-invalid").removeClass("is-valid");
+                $("#backupEmail").text("Veuillez entrer une adresse mail");
+            }
+            else{
+                $.ajax({
+                    url : 'ajax/infosRecapInSession.php',
+                    type : 'POST',
+                    data : 'varPrixCat=' + varPrixCat + '&varPrixCode=' + varPrixCode + '&montant=' + montant + '&codePromo=' + codePromo,
+                    error : function(){
+                        alert('Erreur ajax');
+                    },
+                    success : function(){
+                        $("#form").submit();
+                    }
+                });
+            }
+
+
+
         });
 
 
@@ -168,11 +201,19 @@
             var montant = prixInitial * (1+(varPrixCat/100));
             montant = montant * (1-(varPrixCode/100));
             montant = montant * nbPlaces;
-
+            montant = precisionRound(montant, 1);
             $("#labelMontant").text("Montant total : " + montant + "€");
 
             return montant;
         }
+
+        function precisionRound(number, precision) {
+            var factor = Math.pow(10, precision);
+            return Math.round(number * factor) / factor;
+        }
+
+
+
     </script>
 
 

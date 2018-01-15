@@ -1,5 +1,19 @@
 <?php
+
 $date = htmlspecialchars($_GET['date']);
+
+if (isset($_POST['mail'])){
+    $_SESSION['mail'] = $_POST['mail'];
+    $_SESSION['date'] = $date;
+    $_SESSION['nbPlaces'] = $_POST['nbPlaces'];
+    $_SESSION['categorie'] = $_POST['categorie'];
+    $page = 'recap';
+
+    header('Location: index.php?page='.$page.'&date='.$date);
+
+}
+
+
 
 require_once(PATH_MODELS . 'CategoriePlaceDAO.php');
 
@@ -47,6 +61,8 @@ if(is_null($tabCodes))
     else
         $erreur = 'autre';
 }
+
+
 
 
 

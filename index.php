@@ -1,4 +1,6 @@
 <?php
+session_start();
+
 /*
  * MODULE DE PHP
  * Index du site
