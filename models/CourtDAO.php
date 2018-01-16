@@ -30,6 +30,23 @@ class CourtDAO extends DAO{
         return null;
     }
 
+    public function getAll(){
+        require_once (PATH_ENTITY.'Court.php');
+
+        $res = $this->queryAll('select * from court');
+        $tabCourt = array();
+        if ($res){
+            for ($i = 0; $i < count($res); $i++){
+                $tabCourt[$i] = new Court(
+                    $res[$i]['numCourt'],
+                    $res[$i]['nomCourt'],
+                    $res[$i]['nbPlaces']);
+            }
+            return $tabCourt;
+        }
+        return null;
+    }
+
     public function create($nomCourt, $nbPlaces){
         $param = array($nomCourt, $nbPlaces);
         $res = $this->addSupprRow('insert into court (nomCourt, nbPlaces) VALUES (?, ?)', $param);

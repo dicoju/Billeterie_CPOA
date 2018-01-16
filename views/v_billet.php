@@ -93,6 +93,10 @@
         var montant;
         var codePromo = "null";
 
+        var dispo1 = <?= $catDispo[0] ?>;
+        var dispo2 = <?= $catDispo[1] ?>;
+        var dispo3 = <?= $catDispo[2] ?>;
+
         <?php
         foreach ($tabCats as $key){
             $id = $key->getNumEmplacement();
@@ -110,6 +114,38 @@
         $(document).ready(function() {
             $("#labelMontant").text("Montant total : " + prixInitial + "€");
             montant = prixInitial;
+
+            if (dispo1 === 0){
+                $('#categorie option[value="1"]').attr("disabled", 'disabled');
+                if (dispo2 === 1){
+                    $('#categorie').val("2").change();
+                }
+                else{
+                    $('#categorie').val("3").change();
+                }
+
+            }
+
+            if (dispo2 === 0){
+                $('#categorie option[value="2"]').attr("disabled", 'disabled');
+                if (dispo1 === 1){
+                    $('#categorie').val("1").change();
+                }
+                else{
+                    $('#categorie').val("3").change();
+                }
+            }
+
+            if (dispo3 === 0){
+                $('#categorie option[value="3"]').attr("disabled", 'disabled');
+                if (dispo2 === 1){
+                    $('#categorie').val("1").change();
+                }
+                else{
+                    $('#categorie').val("2").change();
+                }
+            }
+
         });
 
         $("#nbPlaces").change(function () {
@@ -169,8 +205,6 @@
 
 
         });
-
-
 
         function Cat(id, varPrix) {
             this.id = id;

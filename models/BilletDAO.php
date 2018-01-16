@@ -39,7 +39,7 @@ class BilletDAO extends DAO {
         // préparation du tableau de paramètres pour la requette préparée
         $param = array($date);
         // requete préparée
-        $res = $this->queryAll('select * from billet where dateBillet = ?', $param);
+        $res = $this->queryAll('select * from billet where jourBillet = ?', $param);
 
         $tabBillets = array();
         // Si la requete est valide
@@ -65,7 +65,7 @@ class BilletDAO extends DAO {
         // préparation du tableau de paramètres pour la requette préparée
         $param = array($date, $emplacement);
         // requete préparée
-        $res = $this->queryRow('select * from billet where dateBillet = ? and numEmplacement = ?', $param);
+        $res = $this->queryAll('select * from billet where jourBillet = ? and numEmplacement = ?', $param);
 
         $tabBillets = array();
         // Si la requete est valide
