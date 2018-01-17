@@ -235,7 +235,7 @@
             }
             return -1;
         }
-
+        // méthode qui permet de calculer le prix du billet en prenant en compte tous les paramètres
         function calculerMontant(prixInitial, nbPlaces, varPrixCat, varPrixCode){
             var montant = prixInitial * (1+(varPrixCat/100));
             montant = montant * (1-(varPrixCode/100));

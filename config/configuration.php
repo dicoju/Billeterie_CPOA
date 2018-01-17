@@ -22,7 +22,7 @@ const LANG ='FR-fr';
 
 // Paramètres du site : nom de l'auteur ou des auteurs
 const AUTEUR = 'Julien Culieras - Hugo Lager';
-
+// nous fixons le prix initial à 20 euros puis nous ajoutons des variations de prix
 const PRIX_INITIAL = 20;
 
 //dossiers racines du site

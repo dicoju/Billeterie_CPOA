@@ -58,7 +58,7 @@ class BilletDAO extends DAO {
         }
         return null;
     }
-
+    // méthode utile pour savoir si pour un emplacement à une date donnée il reste des places
     public function getByDateAndEmplacement($date, $emplacement){
         require_once (PATH_ENTITY.'Billet.php');
 
