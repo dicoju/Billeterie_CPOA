@@ -1,11 +1,11 @@
 <?php
 
-/**
- * Created by PhpStorm.
- * User: julien
- * Date: 15/01/2018
- * Time: 11:13
+/*
+ * Page ajax
+ * Dans le répertoire controller car besoin d'utiliser les DAO
  */
+
+
 
 // On ajoute le billet en base de données
 require_once(PATH_MODELS . 'BilletDAO.php');

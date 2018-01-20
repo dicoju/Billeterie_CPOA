@@ -70,7 +70,7 @@ class BilletDAO extends DAO {
         $tabBillets = array();
         // Si la requete est valide
         if ($res){
-            // On crée une un objet User puis on le retourne
+            // On crée une un objet Billet puis on le retourne
             for ($i=0; $i<count($res); $i++){
                 $tabBillets[$i] = new Billet(
                     $res['numBillet'],
